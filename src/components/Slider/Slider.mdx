@@ -1,0 +1,34 @@
+---
+name: Slider
+route: /slider
+menu: Components
+status: stable
+---
+
+import { PropsTable } from 'docz'
+import Preview from './Preview'
+import Slider from './Slider'
+
+# Slider
+
+Allows to select a value within a range, using a sliding handle.
+
+## Preview
+
+<Preview />
+
+## Usage
+
+```jsx
+import { useState } from 'react'
+import { Slider } from '@lorikeet/ui'
+
+const App = () => {
+  const [value, setValue] = useState(0)
+  return <Slider value={value} onChange={setValue} />
+}
+```
+
+## Props
+
+<PropsTable of={Slider} />

@@ -1,0 +1,30 @@
+{
+  "name": "devbox",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "sync-assets": "copy-aragon-ui-assets -n aragon-ui ./dist",
+    "build": "npm run sync-assets && webpack --mode production",
+    "build:dev": "npm run sync-assets && webpack --mode development",
+    "update-index": "./scripts/examples-index ../src/components > ./apps.js",
+    "start": "npm run sync-assets && webpack-dev-server --mode development --port 1234"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.2.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "styled-components": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "terser-webpack-plugin": "^1.1.0",
+    "webpack": "^4.27.1",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}

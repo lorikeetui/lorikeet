@@ -1,0 +1,34 @@
+---
+name: Button
+route: /button
+menu: Components
+status: stable
+---
+
+import { PropsTable } from 'docz'
+import Preview from './Preview'
+import Button from './Button'
+
+# Button
+
+A simple Button component.
+
+## Preview
+
+<Preview />
+
+## Usage
+
+```jsx
+import { useState } from 'react'
+import { Button } from '@aragon/ui'
+
+const App = () => {
+  const [clicks, setClicks] = useState(0)
+  <Button onClick={() => setClicks(clicks+1)}>{clicks} clicks</Button>
+}
+```
+
+## Props
+
+<PropsTable of={Button} />

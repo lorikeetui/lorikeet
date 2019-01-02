@@ -1,0 +1,36 @@
+---
+name: TabBar
+route: /tab-bar
+menu: Components
+status: experimental
+---
+
+import { PropsTable } from 'docz'
+import Preview from './Preview'
+import TabBar from './TabBar'
+
+# TabBar
+
+A tab bar that can be used to select different sections of a screen.
+
+## Preview
+
+<Preview />
+
+## Usage
+
+```jsx
+import { useState } from 'react'
+import { TabBar } from '@aragon/ui'
+
+const items = ['Strawberry', 'Banana', 'Apple', 'Cherry']
+
+const App = () => {
+  const [item, setItem] = useState(0)
+  return <TabBar items={items} selected={item} onSelect={setItem} />
+}
+```
+
+## Props
+
+<PropsTable of={TabBar} />
