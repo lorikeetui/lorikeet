@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
-import { animated, Spring } from 'react-spring'
+import { animated, Spring } from 'react-spring/renderprops'
 import { unselectable, springs } from '../../styles'
 import { noop } from '../../utils'
 import Theme from '../Theme/Theme'

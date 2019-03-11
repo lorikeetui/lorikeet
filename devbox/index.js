@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { createGlobalStyle } from 'styled-components'
+import { Main } from '@lorikeet/ui'
 
 import * as APPS from './apps.js'
 
@@ -25,7 +27,9 @@ class Index extends React.Component {
     const { appName } = this.state
     const CurrentApp = APPS[appName]
     return CurrentApp ? (
-      <CurrentApp />
+      <Main>
+        <CurrentApp />
+      </Main>
     ) : (
       <React.Fragment>
         <style>{STYLES}</style>

@@ -11,7 +11,7 @@ const pkg = require('../package.json')
 const COMMAND = 'lorikeet'
 const VERSION = pkg.version
 
-const COPY_ASSETS_DIRNAME = 'lorikeet-assets'
+const COPY_ASSETS_DIRNAME = 'lorikeet'
 
 const HELP = `
   Usage: ${COMMAND} <command> [-hv] [-n dirname] <destination>
@@ -27,12 +27,12 @@ const HELP = `
 
       Options:
 
-      -n, --dirname <dirname>  set the directory name (default: aragon-ui-assets)
+      -n, --dirname <dirname>  set the directory name (default: ${COPY_ASSETS_DIRNAME})
 
       Examples:
 
         $ ${COMMAND} copy-assets .
-        $ ${COMMAND} copy-assets -n aragon-ui ./public
+        $ ${COMMAND} copy-assets -n lorikeet-assets ./public
 `
 
 const argspec = {
@@ -75,7 +75,7 @@ function copyAssets(args) {
 
   return copy(source, destination).then(
     () =>
-      `\nAragon UI assets copied to ./${path.relative(
+      `\nLorikeet assets copied to ./${path.relative(
         process.cwd(),
         destination
       )}`

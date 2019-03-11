@@ -1,14 +1,50 @@
 import colors from './colors'
+import alpha from 'color-alpha'
+
+const twoDecimals = v => Math.round(v * 100) / 100
 
 export default {
   // The general styles used by the other theme groups, or directly by the
   // components. Themes can generally only extend this group to reach a decent
   // level of customization.
   general: {
-    // temporary color names, until we have design principles
     colorBorder: colors.grey[300],
     colorAccent: colors.primary[500],
     colorFocus: colors.primary[500],
+
+    surfaceBackground: '#F8FCFD',
+    surfacePanel: '#FFFFFF',
+    surfacePanelOutline: '#D1D1D1',
+    surfaceFloating: alpha('#445159', 0.9),
+
+    dropShadow: (elevation, opacity = 1) => {
+      if (elevation > 0) {
+        return `
+          drop-shadow(
+            0
+            ${twoDecimals(elevation * 0.6)}px
+            ${twoDecimals(Math.max(1, elevation * 0.55))}px
+            rgba(0, 0, 0, ${twoDecimals(0.2 * opacity)})
+          )
+        `
+      }
+      const color = `rgba(0, 0, 0, ${twoDecimals(0.05 * opacity)})`
+      return `
+        drop-shadow(  0     -0.5px 0 ${color} )
+        drop-shadow( -0.5px  0     0 ${color} )
+        drop-shadow(  0.5px  0     0 ${color} )
+        drop-shadow(  0      0.5px 0 ${color} )
+      `
+    },
+
+    boxShadow: (elevation, opacity = 1) => {
+      return `
+        0
+        ${twoDecimals(elevation * 0.6)}px
+        ${twoDecimals(Math.max(1, elevation * 1.1))}px
+        rgba(0, 0, 0, ${twoDecimals(0.2 * opacity)})
+      `
+    },
 
     radiusSmall: '3px',
 
@@ -55,5 +91,25 @@ export default {
   tabBar: ({ general }) => ({
     borderColorNormal: general.colorBorder,
     borderColorActive: general.colorAccent,
+  }),
+
+  // Used by <Slider />
+  slider: ({ general }) => ({
+    // handle
+    handleStyles: ({ pressProgress }) => ({
+      transform: pressProgress.interpolate(
+        t => `translate3d(0, calc(${t}px - 50%), 0)`
+      ),
+      filter: pressProgress.interpolate(t => general.dropShadow(2 * (1 - t))),
+      background: general.surfacePanel,
+    }),
+
+    // bar
+    baseBarStyles: ({ pressProgress }) => ({
+      background: colors.grey[300],
+    }),
+    activeBarStyles: ({ pressProgress }) => ({
+      background: pressProgress.interpolate(t => colors.secondary[200]),
+    }),
   }),
 }

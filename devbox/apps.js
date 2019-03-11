@@ -3,3 +3,5 @@
 // manually, or your changes will be overwritten.
 
 export { default as LinkedSliders } from '../src/components/Slider/examples/LinkedSliders.js'
+export { default as Slider } from '../src/components/Slider/examples/Slider.js'
+export { default as Shadows } from '../src/components/Theme/examples/Shadows.js'
