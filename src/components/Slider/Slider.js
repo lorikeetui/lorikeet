@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Spring, animated } from 'react-spring/renderprops'
 import { noop } from '../../utils'
 import { springs, unselectable } from '../../styles'
+import Theme from '../Theme/Theme'
 
 const BAR_HEIGHT = 6
 const HANDLE_SIZE = 24
@@ -93,34 +94,22 @@ class Slider extends React.Component {
     this.updateValueFromClientX(this.clientXFromEvent(event))
   }
 
-  getHandleStyles(pressProgress) {
-    return {
-      transform: pressProgress.interpolate(
-        t => `translate3d(0, calc(${t}px - 50%), 0)`
-      ),
-      boxShadow: pressProgress.interpolate(
-        t => `0 4px 8px 0 rgba(0, 0, 0, ${0.13 * (1 - t)})`
-      ),
-      background: pressProgress.interpolate(
-        t => `hsl(0, 0%, ${100 * (1 - t * 0.01)}%)`
-      ),
-    }
-  }
-
   getHandlePositionStyles(value) {
     return {
       transform: value.interpolate(
-        t => `translate3d(calc(${t * 100}% + ${HANDLE_SHADOW_MARGIN}px), 0, 0)`
+        t =>
+          `
+          translate3d(
+            calc(
+              ${t * 100}% + ${HANDLE_SHADOW_MARGIN}px
+            ), 0, 0)`
       ),
     }
   }
 
-  getActiveBarStyles(value, pressProgress) {
+  getActiveBarDimensionStyles(value) {
     return {
       transform: value.interpolate(t => `scaleX(${t}) translateZ(0)`),
-      background: pressProgress.interpolate(
-        t => `hsl(179, ${Math.round(76 * (1 + 0.2 * t))}%, 48%)`
-      ),
     }
   }
 
@@ -128,43 +117,56 @@ class Slider extends React.Component {
     const { pressed } = this.state
     const value = Math.max(0, Math.min(1, this.props.value))
     return (
-      <Spring
-        config={springs.swift}
-        to={{
-          pressProgress: Number(pressed),
-          value,
-        }}
-        native
-      >
-        {({ value, pressProgress }) => (
-          <Main>
-            <Area
-              ref={this.handleRef}
-              onMouseDown={this.dragStart}
-              onTouchStart={this.dragStart}
+      <Theme>
+        {({ themeGroups }) => {
+          const theme = themeGroups(['general', 'slider'])
+          return (
+            <Spring
+              config={springs.swift}
+              to={{
+                pressProgress: Number(pressed),
+                value,
+              }}
+              native
             >
-              <Bars>
-                <BaseBar />
-                <ActiveBar
-                  pressed={pressed}
-                  style={this.getActiveBarStyles(value, pressProgress)}
-                />
-              </Bars>
+              {({ value, pressProgress }) => (
+                <Main>
+                  <Area
+                    ref={this.handleRef}
+                    onMouseDown={this.dragStart}
+                    onTouchStart={this.dragStart}
+                  >
+                    <Bars>
+                      <BaseBar
+                        style={theme.slider.baseBarStyles({ pressProgress })}
+                      />
+                      <ActiveBar
+                        style={{
+                          ...theme.slider.activeBarStyles({ pressProgress }),
+                          ...this.getActiveBarDimensionStyles(value),
+                        }}
+                      />
+                    </Bars>
 
-              <HandleClip>
-                <HandlePosition
-                  style={this.getHandlePositionStyles(value, pressProgress)}
-                >
-                  <Handle
-                    pressed={pressed}
-                    style={this.getHandleStyles(pressProgress)}
-                  />
-                </HandlePosition>
-              </HandleClip>
-            </Area>
-          </Main>
-        )}
-      </Spring>
+                    <HandleClip>
+                      <HandlePosition
+                        style={this.getHandlePositionStyles(
+                          value,
+                          pressProgress
+                        )}
+                      >
+                        <Handle
+                          style={theme.slider.handleStyles({ pressProgress })}
+                        />
+                      </HandlePosition>
+                    </HandleClip>
+                  </Area>
+                </Main>
+              )}
+            </Spring>
+          )
+        }}
+      </Theme>
     )
   }
 }
@@ -200,9 +202,7 @@ const Bar = styled(animated.div)`
   bottom: 0;
 `
 
-const BaseBar = styled(Bar)`
-  background: #edf3f6;
-`
+const BaseBar = styled(Bar)``
 
 const ActiveBar = styled(Bar)`
   transform-origin: 0 0;
@@ -232,7 +232,6 @@ const Handle = styled(animated.div)`
   left: 0;
   width: ${HANDLE_SIZE}px;
   height: ${HANDLE_SIZE}px;
-  border: 0.5px solid #dcecf5;
   border-radius: 50%;
 `
 
