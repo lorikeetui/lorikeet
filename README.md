@@ -34,7 +34,7 @@ const App = () => (
 )
 ```
 
-*Your project is now ready to use Lorikeet! 🦜*
+Your project is now ready to use Lorikeet.
 
 ### Assets
 
